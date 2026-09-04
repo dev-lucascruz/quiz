@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>O Despertar do Baú | Contagem Regressiva</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Cinzel', 'Georgia', serif;
+        }
+
+        body {
+            background: radial-gradient(circle at center, #1b1b2f 0%, #090a0f 100%);
+            color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+            text-align: center;
+            padding: 15px;
+        }
+
+        .container {
+            max-width: 500px;
+            width: 100%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .chest-icon {
+            font-size: 3.5rem;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.6));
+            animation: pulse-glow 3s infinite alternate;
+        }
+
+        @keyframes pulse-glow {
+            0% { transform: scale(1); filter: drop-shadow(0 0 10px rgba(212, 175, 55, 0.4)); }
+            100% { transform: scale(1.05); filter: drop-shadow(0 0 25px rgba(212, 175, 55, 0.9)); }
+        }
+
+        h1 {
+            font-size: 1.6rem;
+            margin-bottom: 8px;
+            color: #fcd34d;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+        }
+
+        .subtitle {
+            font-size: 0.85rem;
+            margin-bottom: 25px;
+            color: #94a3b8;
+            line-height: 1.4;
+            max-width: 400px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        .badges-grid {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(212, 175, 55, 0.3);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            color: #e2e8f0;
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
+        }
+
+        .countdown {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            width: 100%;
+            margin-bottom: 25px;
+        }
+
+        .time-box {
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid #d4af37;
+            padding: 12px 5px;
+            border-radius: 12px;
+            box-shadow: inset 0 0 10px rgba(0,0,0,0.8), 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .time-box span {
+            display: block;
+            font-size: 2rem;
+            font-weight: bold;
+            color: #fef08a;
+            font-family: 'Courier New', Courier, monospace;
+            text-shadow: 0 0 8px rgba(254, 240, 138, 0.4);
+        }
+
+        .time-box label {
+            font-size: 0.65rem;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+        }
+
+        /* Estilo do Botão Revelado */
+        .reveal-btn {
+            display: inline-block;
+            background: linear-gradient(135deg, #d4af37 0%, #aa771c 100%);
+            color: #090a0f;
+            padding: 22px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-decoration: none;
+            border-radius: 30px;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.6);
+            transition: all 0.3s ease;
+            animation: pulse-btn 2s infinite alternate;
+            margin-top: 10px;
+        }
+
+        .reveal-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #fcd34d 0%, #d4af37 100%);
+            box-shadow: 0 0 30px rgba(252, 211, 77, 0.9);
+        }
+
+        @keyframes pulse-btn {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.03); }
+        }
+
+        .footer-note {
+            margin-top: 8px;
+            font-size: 0.75rem;
+            color: #64748b;
+            font-style: italic;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 380px) {
+            h1 { font-size: 1.4rem; }
+            .time-box span { font-size: 1.6rem; }
+            .time-box { padding: 10px 2px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <div class="chest-icon">🗝️</div>
+        <h1>O Baú do Tesouro</h1>
+        <p class="subtitle">As relíquias de Hogwarts, Westeros e Pérola Negra estão guardadas.
+            <br>O segredo aguarda o tempo certo.
+            <br>Pegue seu pote de Nutella e controle a sua ansiedade.
+        </p>
+
+        <div class="badges-grid">
+            <div class="badge">⚡ Harry Potter</div>
+            <div class="badge">🐺 Game of Thrones</div>
+            <div class="badge">⚓ Piratas</div>
+        </div>
+
+        <div id="content-area">
+            <div class="countdown" id="countdown">
+                <div class="time-box">
+                    <span id="days">00</span>
+                    <label>Dias</label>
+                </div>
+                <div class="time-box">
+                    <span id="hours">00</span>
+                    <label>Horas</label>
+                </div>
+                <div class="time-box">
+                    <span id="minutes">00</span>
+                    <label>Minutos</label>
+                </div>
+                <div class="time-box">
+                    <span id="seconds">00</span>
+                    <label>Segundos</label>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-note" id="footer-text">Aguarde o momento da revelação...</div>
+    </div>
+
+    <script>
+        // DEFINA A DATA E HORA EXATA (Ano, Mês [0-11 onde 8 é Setembro], Dia, Hora, Minuto, Segundo)
+        const targetDate = new Date(2026, 8, 7, 0, 0, 0).getTime();
+
+        const countdownInterval = setInterval(() => {
+            const now = new Date().getTime();
+            const difference = targetDate - now;
+
+            if (difference < 0) {
+                clearInterval(countdownInterval);
+                
+                // Substitui o cronômetro pelo botão de redirecionamento
+                document.getElementById("content-area").innerHTML = `
+                    <div style="margin-bottom: 15px; font-size: 1.0rem; color: #4ade80; font-weight: bold; text-shadow: 0 0 10px rgba(74,222,128,0.5);">
+                        O TEU TEMPO CHEGOU! O BAÚ JÁ PODE SER ABERTO!
+                    </div>
+                    <a href="/menu.html" class="reveal-btn">Abrir o Baú</a>
+                `;
+                
+                document.getElementById("footer-text").innerText = "Todas as barreiras foram rompidas.";
+                return;
+            }
+
+            const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = String(days).padStart(2, '0');
+            document.getElementById("hours").innerText = String(hours).padStart(2, '0');
+            document.getElementById("minutes").innerText = String(minutes).padStart(2, '0');
+            document.getElementById("seconds").innerText = String(seconds).padStart(2, '0');
+        }, 1000);
+    </script>
+</body>
+</html>
