@@ -203,28 +203,30 @@
 
         <script>
     <script>
+   <script>
     const audio = document.getElementById('musicaPagina');
-    const volumeMaximo = 0.08; // 8% do volume
+    const volumeMaximo = 0.08; 
 
-    // 1. FADE-IN AO CARREGAR A PÁGINA
     window.addEventListener('DOMContentLoaded', () => {
-        audio.volume = 0;
-        audio.play().catch(error => {
-            console.log("Autoplay bloqueado pelo navegador (comum no iOS):", error);
+        audio.volume = volumeMaximo; // Garante volume inicial caso retorne via cache
+        audio.play().catch(() => {
+            // Se o autoplay for barrado, toca no primeiro toque na tela
+            document.body.addEventListener('click', () => {
+                audio.play();
+            }, { once: true });
         });
+    });
 
-        let duracao = 1500; 
-        let intervalo = 50;
-        let incremento = volumeMaximo / (duracao / intervalo);
+    document.querySelectorAll('.btn-theme').forEach(botao => {
+        botao.addEventListener('click', function(e) {
+            e.preventDefault(); 
+            let destino = this.getAttribute('href');
+            if (!destino) return;
 
-        let fadeIn = setInterval(() => {
-            if (audio.volume < volumeMaximo - incremento) {
-                audio.volume += incremento;
-            } else {
-                audio.volume = volumeMaximo; 
-                clearInterval(fadeIn);
-            }
-        }, intervalo);
+            // Redirecionamento instantâneo e seguro para o iOS não bloquear
+            audio.pause();
+            window.location.href = destino;
+        });
     });
 
     // 2. CONTROLE DE CLIQUES E LINKS
