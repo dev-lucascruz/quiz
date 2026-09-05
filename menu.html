@@ -227,27 +227,38 @@
     });
 
     // Seleciona todos os botões que possuem a classe '.btn-theme'
-    document.querySelectorAll('.btn-theme').forEach(botao => {
+document.querySelectorAll('.btn-theme').forEach(botao => {
     botao.addEventListener('click', function(e) {
-        e.preventDefault(); // Impede a troca imediata de página
-        
-        let destino = this.href; // Pega o link específico do botão clicado
-        let duracao = 500; // 1 segundo de fade-out
-        let intervalo = 50;
-        let decremento = audio.volume / (duracao / intervalo);
+        e.preventDefault(); 
 
-        let fadeOut = setInterval(() => {
-            if (audio.volume > decremento) {
-                audio.volume -= decremento;
-            } else {
-                audio.volume = 0;
-                audio.pause();
-                clearInterval(fadeOut);
-                
-                // Redireciona para o link correto da página escolhida
-                window.location.href = destino; 
-            }
-        }, intervalo);
+        // Pega o destino de forma segura (compatível caso seja tag <a> ou outro elemento)
+        let destino = this.getAttribute('href') || this.dataset.href;
+        
+        if (!destino) return; // Se não houver destino, encerra
+
+        let duracao = 500; // 500ms
+        let intervalo = 50;
+        
+        // Verifica se o objeto audio existe e está tocando para evitar erros
+        if (typeof audio !== 'undefined' && !audio.paused) {
+            let decremento = audio.volume / (duracao / intervalo);
+
+            let fadeOut = setInterval(() => {
+                if (audio.volume > decremento) {
+                    audio.volume -= decremento;
+                } else {
+                    audio.volume = 0;
+                    audio.pause();
+                    clearInterval(fadeOut);
+                    
+                    // Redireciona após o áudio parar
+                    window.location.href = destino; 
+                }
+            }, intervalo);
+        } else {
+            // Se o áudio não estiver tocando, redireciona imediatamente
+            window.location.href = destino;
+        }
     });
 });
 
