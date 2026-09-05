@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu de Desafios</title>
+    <!-- Fontes do Google -->
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=MedievalSharp&family=Pirata+One&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: 
+                linear-gradient(rgba(10, 15, 29, 0.85), rgba(15, 23, 42, 0.85)),
+                url('https://images.unsplash.com/photo-1518709268805-4e9042af9f23?q=80&w=1600&auto=format&fit=crop');
+            background-size: cover;
+            background-position: center;
+            font-family: 'Cinzel', serif;
+            color: #fff;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 500px;
+            background: rgba(15, 23, 42, 0.8);
+            backdrop-filter: blur(12px);
+            border: 2px solid rgba(212, 175, 55, 0.3);
+            border-radius: 20px;
+            padding: 40px 25px;
+            text-align: center;
+            box-shadow: 0 0 35px rgba(0, 0, 0, 0.9), inset 0 0 15px rgba(212, 175, 55, 0.1);
+        }
+
+        h1 {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            color: #e2e8f0;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            letter-spacing: 2px;
+        }
+
+        .menu-list {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .btn-theme {
+            width: 100%;
+            padding: 16px 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none; /* Remove o sublinhado dos links */
+        }
+
+        .btn-theme:hover {
+            transform: translateY(-3px) scale(1.02);
+        }
+
+        .btn-content {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+        }
+
+        .title {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Estilo da Tag de Nível */
+        .level-badge {
+            font-size: 0.75rem;
+            font-family: 'Cinzel', serif;
+            font-weight: bold;
+            padding: 3px 10px;
+            border-radius: 20px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+        }
+
+        /* 1. Botão Piratas do Caribe */
+        .btn-pirates {
+            background: linear-gradient(135deg, #2b1810, #5c3a21);
+            color: #f1d592;
+            border: 2px solid #8c5a2b;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        .btn-pirates .title {
+            font-family: 'Pirata One', cursive;
+            font-size: 1.5rem;
+        }
+        .btn-pirates .level-badge {
+            background: #8c5a2b;
+            color: #f1d592;
+            border: 1px solid #d4af37;
+        }
+        .btn-pirates:hover {
+            border-color: #d4af37;
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+        }
+
+        /* 2. Botão Game of Thrones */
+        .btn-got {
+            background: linear-gradient(135deg, #0f172a, #334155);
+            color: #cbd5e1;
+            border: 2px solid #64748b;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        .btn-got .title {
+            font-family: 'Cinzel', serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+        .btn-got .level-badge {
+            background: #334155;
+            color: #e2e8f0;
+            border: 1px solid #94a3b8;
+        }
+        .btn-got:hover {
+            border-color: #94a3b8;
+            color: #ffffff;
+            box-shadow: 0 0 20px rgba(148, 163, 184, 0.4);
+        }
+
+        /* 3. Botão Harry Potter */
+        .btn-hp {
+            background: linear-gradient(135deg, #450a0a, #7f1d1d);
+            color: #fef08a;
+            border: 2px solid #d97706;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+        .btn-hp .title {
+            font-family: 'MedievalSharp', cursive;
+            font-size: 1.3rem;
+        }
+        .btn-hp .level-badge {
+            background: #7f1d1d;
+            color: #fef08a;
+            border: 1px solid #f59e0b;
+        }
+        .btn-hp:hover {
+            border-color: #f59e0b;
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.5);
+        }
+
+        .icon-main {
+            font-size: 1.8rem;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Escolha o Desafio</h1>
+        <audio id="musicaPagina" src="intro.mp3" autoplay loop ></audio>
+        <div class="menu-list">
+            <!-- Botão 1: Piratas do Caribe -->
+            <a href="piratas.html" class="btn-theme btn-pirates">
+                <div class="btn-content">
+                    <span class="level-badge">Nível 1</span>
+                    <span class="title">☠️ Piratas do Caribe</span>
+                </div>
+                <span class="icon-main">⚓</span>
+            </a>
+
+            <!-- Botão 2: Game of Thrones -->
+            <a href="got.html" class="btn-theme btn-got">
+                <div class="btn-content">
+                    <span class="level-badge">Nível 2</span>
+                    <span class="title">⚔️ Game of Thrones</span>
+                </div>
+                <span class="icon-main">🐺</span>
+            </a>
+
+            <!-- Botão 3: Harry Potter -->
+            <a href="hp.html" class="btn-theme btn-hp">
+                <div class="btn-content">
+                    <span class="level-badge">Nível 3</span>
+                    <span class="title">⚡ Harry Potter</span>
+                </div>
+                <span class="icon-main">🧹</span>
+            </a>
+        </div>
+    </div>
+
+        <script>
+    const audio = document.getElementById('musicaPagina');
+    const volumeMaximo = 0.08; // 10% do volume
+
+    // 1. FADE-IN AO CARREGAR A PÁGINA
+    window.addEventListener('DOMContentLoaded', () => {
+        audio.volume = 0;
+        audio.play().catch(error => {
+            console.log("Autoplay bloqueado pelo navegador:", error);
+        });
+
+        let duracao = 1500; // 1.5 segundos de fade-in
+        let intervalo = 50;
+        let incremento = volumeMaximo / (duracao / intervalo);
+
+        let fadeIn = setInterval(() => {
+            if (audio.volume < volumeMaximo - incremento) {
+                audio.volume += incremento;
+            } else {
+                audio.volume = volumeMaximo; // Trava exatamente em 10%
+                clearInterval(fadeIn);
+            }
+        }, intervalo);
+    });
+
+    // Seleciona todos os botões que possuem a classe '.btn-theme'
+    document.querySelectorAll('.btn-theme').forEach(botao => {
+    botao.addEventListener('click', function(e) {
+        e.preventDefault(); // Impede a troca imediata de página
+        
+        let destino = this.href; // Pega o link específico do botão clicado
+        let duracao = 500; // 1 segundo de fade-out
+        let intervalo = 50;
+        let decremento = audio.volume / (duracao / intervalo);
+
+        let fadeOut = setInterval(() => {
+            if (audio.volume > decremento) {
+                audio.volume -= decremento;
+            } else {
+                audio.volume = 0;
+                audio.pause();
+                clearInterval(fadeOut);
+                
+                // Redireciona para o link correto da página escolhida
+                window.location.href = destino; 
+            }
+        }, intervalo);
+    });
+});
+
+    
+       
+             
+    </script>
+
+</body>
+</html>
