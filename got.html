@@ -71,7 +71,7 @@
 
     <!-- Barra Superior -->
     <header class="topbar">
-        <button class="btn-menu" onclick="voltarAoMenu()">MENU</button>
+        <button class="btn-menu" data-href="menu.html">MENU</button>
         <audio id="musicaPagina" src="westeros.mp3" autoplay loop ></audio>
     </header>
 
@@ -109,7 +109,7 @@
     document.querySelector('.btn-menu').addEventListener('click', function(e) {
         e.preventDefault(); // Impede a troca imediata de página
         
-        let destino = this.href;
+        let destino = this.getAttribute('href') || this.dataset.href;
         let duracao = 500; // 1 segundo de fade-out
         let intervalo = 50;
         let decremento = audio.volume / (duracao / intervalo);
