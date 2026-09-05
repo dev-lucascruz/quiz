@@ -73,7 +73,7 @@
     <header class="topbar">
         <a href="menu-ios.html" class="btn-menu">MENU</a>
     <!-- <button class="btn-menu" onclick="voltarAoMenu()">MENU</button> -->
-        <audio id="musicaPagina" src="westeros.mp3" autoplay loop ></audio>
+        <audio id="musicaPagina" src="westeros.mp3" autoplay loop muted></audio>
     </header>
 
     <!-- Área da Tela com o iframe do Genially -->
@@ -85,12 +85,13 @@
     const audio = document.getElementById('musicaPagina');
     const volumeMaximo = 0.05; 
 
-    // Força o reset e play ao carregar a página (corrige o bug de não tocar ao voltar)
-    window.addEventListener('pageshow', (event) => {
+window.addEventListener('pageshow', (event) => {
         audio.currentTime = 0;
-        audio.volume = volumeMaximo;
-        audio.play().catch(error => {
-            console.log("Autoplay bloqueado pelo iOS, aguardando interação:", error);
+        audio.muted = true; // Garante que nasce mutado para o iOS liberar
+        audio.play().then(() => {
+            audio.muted = false; // Desmuta assim que o play for aceito
+        }).catch(error => {
+            console.log("Erro no autoplay:", error);
         });
     });
 
