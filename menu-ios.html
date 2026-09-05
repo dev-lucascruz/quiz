@@ -202,17 +202,18 @@
     </div>
 
         <script>
+    <script>
     const audio = document.getElementById('musicaPagina');
-    const volumeMaximo = 0.08; // 10% do volume
+    const volumeMaximo = 0.08; // 8% do volume
 
     // 1. FADE-IN AO CARREGAR A PÁGINA
     window.addEventListener('DOMContentLoaded', () => {
         audio.volume = 0;
         audio.play().catch(error => {
-            console.log("Autoplay bloqueado pelo navegador:", error);
+            console.log("Autoplay bloqueado pelo navegador (comum no iOS):", error);
         });
 
-        let duracao = 1500; // 1.5 segundos de fade-in
+        let duracao = 1500; 
         let intervalo = 50;
         let incremento = volumeMaximo / (duracao / intervalo);
 
@@ -220,28 +221,28 @@
             if (audio.volume < volumeMaximo - incremento) {
                 audio.volume += incremento;
             } else {
-                audio.volume = volumeMaximo; // Trava exatamente em 10%
+                audio.volume = volumeMaximo; 
                 clearInterval(fadeIn);
             }
         }, intervalo);
     });
 
-    // Seleciona todos os botões que possuem a classe '.btn-theme'
-document.querySelectorAll('.btn-theme').forEach(botao => {
-    botao.addEventListener('click', function(e) {
-        e.preventDefault(); // Impede o Safari de abrir o menu de preview do link
+    // 2. CONTROLE DE CLIQUES E LINKS
+    document.querySelectorAll('.btn-theme').forEach(botao => {
+        botao.addEventListener('click', function(e) {
+            e.preventDefault(); // Impede o comportamento padrão do link
 
-        let destino = this.getAttribute('href') || this.href;
-        if (!destino || destino === '#') return;
+            // Pega o destino de forma segura usando getAttribute
+            let destino = this.getAttribute('href');
+            if (!destino || destino === '#') return;
 
-        // Toca/controla o áudio se ele existir
-        if (typeof audio !== 'undefined') {
-            // No iOS, se o áudio estiver pausado, precisamos dar um .play() rápido 
-            // dentro do evento de clique para desbloquear as permissões de mídia.
-            audio.play().catch(err => console.log("Erro ao tocar áudio:", err));
+            // Garante que o iOS permita tocar áudio no clique caso o autoplay tenha falhado
+            if (audio.paused) {
+                audio.volume = volumeMaximo;
+                audio.play().catch(err => console.log("Erro ao tocar no clique:", err));
+            }
 
-            // Fade out rápido e seguro
-            let duracao = 400; 
+            let duracao = 400; // Fade-out rápido para não atrasar o iOS
             let intervalo = 50;
             let decremento = audio.volume / (duracao / intervalo);
 
@@ -254,14 +255,14 @@ document.querySelectorAll('.btn-theme').forEach(botao => {
                     clearInterval(fadeOut);
                 }
             }, intervalo);
-        }
 
-        // Redireciona a página de forma garantida após um breve respiro para iniciar o fade
-        setTimeout(() => {
-            window.location.href = destino;
-        }, 300);
+            // Redireciona com segurança após um breve instante (garante que o iOS não bloqueie a navegação)
+            setTimeout(() => {
+                window.location.href = destino;
+            }, 300);
+        });
     });
-});
+</>
              
     </script>
 
