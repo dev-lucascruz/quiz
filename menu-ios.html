@@ -208,25 +208,28 @@
     const volumeMaximo = 0.08; 
 
     window.addEventListener('DOMContentLoaded', () => {
-        audio.volume = volumeMaximo; // Garante volume inicial caso retorne via cache
-        audio.play().catch(() => {
-            // Se o autoplay for barrado, toca no primeiro toque na tela
-            document.body.addEventListener('click', () => {
-                audio.play();
-            }, { once: true });
+        audio.volume = 0;
+        
+        // O play() com 'muted' é aceito instantaneamente por Android e iOS
+        audio.play().then(() => {
+            // Assim que o navegador autoriza a reprodução, tiramos o mudo programaticamente
+            audio.muted = false;
+        }).catch(error => {
+            console.log("Autoplay barrado:", error);
         });
-    });
 
-    document.querySelectorAll('.btn-theme').forEach(botao => {
-        botao.addEventListener('click', function(e) {
-            e.preventDefault(); 
-            let destino = this.getAttribute('href');
-            if (!destino) return;
+        let duracao = 1500; 
+        let intervalo = 50;
+        let incremento = volumeMaximo / (duracao / intervalo);
 
-            // Redirecionamento instantâneo e seguro para o iOS não bloquear
-            audio.pause();
-            window.location.href = destino;
-        });
+        let fadeIn = setInterval(() => {
+            if (audio.volume < volumeMaximo - incremento) {
+                audio.volume += incremento;
+            } else {
+                audio.volume = volumeMaximo; 
+                clearInterval(fadeIn);
+            }
+        }, intervalo);
     });
 
     // 2. CONTROLE DE CLIQUES E LINKS
