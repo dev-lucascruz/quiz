@@ -229,14 +229,19 @@
     // Seleciona todos os botões que possuem a classe '.btn-theme'
 document.querySelectorAll('.btn-theme').forEach(botao => {
     botao.addEventListener('click', function(e) {
-        // Pega o destino de forma segura
+        e.preventDefault(); // Impede o Safari de abrir o menu de preview do link
+
         let destino = this.getAttribute('href') || this.href;
-        
         if (!destino || destino === '#') return;
 
-        // Se houver áudio tocando, faz o fade-out, mas NÃO prende o redirecionamento nele
-        if (typeof audio !== 'undefined' && !audio.paused) {
-            let duracao = 500; // 500ms
+        // Toca/controla o áudio se ele existir
+        if (typeof audio !== 'undefined') {
+            // No iOS, se o áudio estiver pausado, precisamos dar um .play() rápido 
+            // dentro do evento de clique para desbloquear as permissões de mídia.
+            audio.play().catch(err => console.log("Erro ao tocar áudio:", err));
+
+            // Fade out rápido e seguro
+            let duracao = 400; 
             let intervalo = 50;
             let decremento = audio.volume / (duracao / intervalo);
 
@@ -251,15 +256,12 @@ document.querySelectorAll('.btn-theme').forEach(botao => {
             }, intervalo);
         }
 
-        // Permite que o iOS navegue instantaneamente sem travar no temporizador
+        // Redireciona a página de forma garantida após um breve respiro para iniciar o fade
         setTimeout(() => {
             window.location.href = destino;
-        }, 50); // Um pequeno atraso imperceptível (50ms) apenas para iniciar o fade do áudio
+        }, 300);
     });
 });
-
-    
-       
              
     </script>
 
