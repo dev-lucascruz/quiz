@@ -71,9 +71,8 @@
 
     <!-- Barra Superior -->
     <header class="topbar">
-        <a href="menu-ios.html" class="btn-menu">MENU</a>
-    <!-- <button class="btn-menu" onclick="voltarAoMenu()">MENU</button> -->
-        <audio id="musicaPagina" src="westeros.mp3" autoplay loop muted></audio>
+        <button class="btn-menu">MENU</button>
+        <audio id="musicaPagina" src="westeros.mp3" autoplay loop ></audio>
     </header>
 
     <!-- Área da Tela com o iframe do Genially -->
@@ -83,34 +82,34 @@
 
     <script>
     const audio = document.getElementById('musicaPagina');
-    const volumeMaximo = 0.05; 
+    const volumeMaximo = 0.05; // 10% do volume
 
-window.addEventListener('pageshow', (event) => {
-        audio.currentTime = 0;
-        audio.muted = true; // Garante que nasce mutado para o iOS liberar
-        audio.play().then(() => {
-            audio.muted = false; // Desmuta assim que o play for aceito
-        }).catch(error => {
-            console.log("Erro no autoplay:", error);
+    // 1. FADE-IN AO CARREGAR A PÁGINA
+    window.addEventListener('DOMContentLoaded', () => {
+        audio.volume = 0;
+        audio.play().catch(error => {
+            console.log("Autoplay bloqueado pelo navegador:", error);
         });
-    });
 
-    // Garante o funcionamento do link do menu no iOS
-    document.querySelector('.btn-menu').addEventListener('click', function(e) {
-        e.preventDefault(); 
-        let destino = this.getAttribute('href');
-        
-        if (!destino) return;
+        let duracao = 1500; // 1.5 segundos de fade-in
+        let intervalo = 50;
+        let incremento = volumeMaximo / (duracao / intervalo);
 
-        audio.pause();
-        window.location.href = destino;
+        let fadeIn = setInterval(() => {
+            if (audio.volume < volumeMaximo - incremento) {
+                audio.volume += incremento;
+            } else {
+                audio.volume = volumeMaximo; // Trava exatamente em 10%
+                clearInterval(fadeIn);
+            }
+        }, intervalo);
     });
 
     // 2. FADE-OUT AO CLICAR NO LINK
     document.querySelector('.btn-menu').addEventListener('click', function(e) {
         e.preventDefault(); // Impede a troca imediata de página
         
-        let destino = this.getAttribute('href') || this.dataset.href;
+        let destino = this.href;
         let duracao = 500; // 1 segundo de fade-out
         let intervalo = 50;
         let decremento = audio.volume / (duracao / intervalo);
@@ -129,9 +128,9 @@ window.addEventListener('pageshow', (event) => {
         }, intervalo);
     });
        
-               function voltarAoMenu() {
-            window.location.href = "menu-ios.html";
-        }
+        //     function voltarAoMenu() {
+        //     window.location.href = "menu.html";
+        // }
     </script>
 
 </body>
