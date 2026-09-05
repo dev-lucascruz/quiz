@@ -83,27 +83,26 @@
 
     <script>
     const audio = document.getElementById('musicaPagina');
-    const volumeMaximo = 0.05; // 10% do volume
+    const volumeMaximo = 0.05; 
 
-    // 1. FADE-IN AO CARREGAR A PÁGINA
-    window.addEventListener('DOMContentLoaded', () => {
-        audio.volume = 0;
+    // Força o reset e play ao carregar a página (corrige o bug de não tocar ao voltar)
+    window.addEventListener('pageshow', (event) => {
+        audio.currentTime = 0;
+        audio.volume = volumeMaximo;
         audio.play().catch(error => {
-            console.log("Autoplay bloqueado pelo navegador:", error);
+            console.log("Autoplay bloqueado pelo iOS, aguardando interação:", error);
         });
+    });
 
-        let duracao = 1500; // 1.5 segundos de fade-in
-        let intervalo = 50;
-        let incremento = volumeMaximo / (duracao / intervalo);
+    // Garante o funcionamento do link do menu no iOS
+    document.querySelector('.btn-menu').addEventListener('click', function(e) {
+        e.preventDefault(); 
+        let destino = this.getAttribute('href');
+        
+        if (!destino) return;
 
-        let fadeIn = setInterval(() => {
-            if (audio.volume < volumeMaximo - incremento) {
-                audio.volume += incremento;
-            } else {
-                audio.volume = volumeMaximo; // Trava exatamente em 10%
-                clearInterval(fadeIn);
-            }
-        }, intervalo);
+        audio.pause();
+        window.location.href = destino;
     });
 
     // 2. FADE-OUT AO CLICAR NO LINK
